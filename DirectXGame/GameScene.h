@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CameraController.h"
 #include "DeathParticles.h"
 #include "Enemy.h"
@@ -56,7 +56,6 @@ private:
 	static const inline float kFadingTime = 0.75f;
 
 	KamataEngine::Model* modelAttack_;
-	std::list<HitEffect*> hitEffects_;
 
 public:
 	~GameScene();
@@ -81,6 +80,4 @@ public:
 	void UpdateCamera();
 	void UpdateBlocks();
 	void UpdateDeathParticles();
-	void CreateHitEffect(KamataEngine::Vector3 spawnPoint);
-	
 };

@@ -1,6 +1,4 @@
-#include "Enemy.h"
-#include "Easing.h"
-#include "Player.h"
+﻿#include "Enemy.h"
 #include "Vector3Operator.h"
 #include "WorldMatrixUpdate.h"
 #include <cassert>
@@ -21,30 +19,12 @@ void Enemy::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera,
 };
 
 void Enemy::Update() {
-	if (behaviorRequest_ != Behavior::kUnknown) {
-		behavior_ = behaviorRequest_;
-		switch (behavior_) {
-		case Behavior::kWalk:
-		default:
-			BehaviorWalkInitialize();
-			break;
-		case Behavior::kDeath:
-			BehaviorDeathInitialize();
-			break;
-		}
-
-		behaviorRequest_ = Behavior::kUnknown;
-	}
-
-	switch (behavior_) {
-	case Behavior::kWalk:
-
-		BehaviorWalkUpdate();
-		break;
-	case Behavior::kDeath:
-		BehaviorDeathUpdate();
-		break;
-	}
+	worldTransform_.translation_ += velocity_;
+	walkTimer_ += 1.0f / 60.0f;
+	float param = std::sin(std::numbers::pi_v<float> * 2.0f * walkTimer_ / kWalkMotionTime);
+	float degree = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
+	worldTransform_.rotation_.x = degree * std::numbers::pi_v<float> / 180.0f;
+	WorldMatrixUpdate(worldTransform_);
 };
 
 void Enemy::Draw() { model_->Draw(worldTransform_, *camera_); };
@@ -68,45 +48,4 @@ AABB Enemy::GetAABB() {
 	return aabb;
 };
 
-void Enemy::OnCollision(const Player* player) {
-	if (behavior_ == Behavior::kDeath) {
-		return;
-	}
-
-	if (player->IsAttack()) {
-		behaviorRequest_ = Behavior::kDeath;
-
-		Vector3 effectPos = (worldTransform_.translation_ + player->GetWorldTransform().translation_) / 2.0f;
-		gameScene_->CreateHitEffect(effectPos);
-	}
-	
-};
-
-void Enemy::BehaviorWalkInitialize() {
-
-};
-
-void Enemy::BehaviorWalkUpdate() {
-	worldTransform_.translation_ += velocity_;
-	walkTimer_ += 1.0f / 60.0f;
-	float param = std::sin(std::numbers::pi_v<float> * 2.0f * walkTimer_ / kWalkMotionTime);
-	float degree = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
-	worldTransform_.rotation_.x = degree * std::numbers::pi_v<float> / 180.0f;
-	WorldMatrixUpdate(worldTransform_);
-};
-
-void Enemy::BehaviorDeathInitialize() { 
-	deathAnimTimer_ = 0.0f; 
-	isCollidionDisabled_ = true;
-};
-
-void Enemy::BehaviorDeathUpdate() {
-	deathAnimTimer_ += 1.0f / 60.0f;
-	float t = deathAnimTimer_ / kDeathAnimTimerMax_;
-	worldTransform_.rotation_.y = EaseIn(std::numbers::pi_v<float> * 3.0f / 2.0f, -std::numbers::pi_v<float> * 1.0f / 2.0f, t);
-	worldTransform_.rotation_.x = EaseIn(0.0f, -std::numbers::pi_v<float> * 1.0f / 2.0f, t);
-	WorldMatrixUpdate(worldTransform_);
-	if (deathAnimTimer_ >= kDeathAnimTimerMax_) {
-		isDead_ = true;
-	}
-};
+void Enemy::OnCollision(const Player* player) { (void)player; };

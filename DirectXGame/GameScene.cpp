@@ -241,9 +241,6 @@ void GameScene::CheckAllCollisions() {
 		aabb1 = player_->GetAABB();
 
 		for (Enemy* enemy : enemies_) {
-			if (enemy->IsCollidionDisabled()) {
-				continue;
-			}
 
 			aabb2 = enemy->GetAABB();
 
@@ -286,14 +283,6 @@ void GameScene::ChangePhase() {
 }
 
 void GameScene::UpdateEnemies() {
-	enemies_.remove_if([](Enemy* enemy) {
-		if (enemy->IsDead()) {
-			delete enemy;
-			return true;
-		}
-		return false;
-	});
-
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}

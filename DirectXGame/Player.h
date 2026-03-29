@@ -89,7 +89,6 @@ private:
 	static inline const float kAttackVelocity = 0.3f;
 
 	bool canRush_ = true;
-	bool isAttack_ = false;
 
 	
 
@@ -150,6 +149,4 @@ public:
 
 	void BehaviorRootInitialize();
 	void BehaviorAttackInitialize();
-
-	bool IsAttack() const { return isAttack_; }
 };

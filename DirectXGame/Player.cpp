@@ -24,7 +24,6 @@ void Player::Initialize(Model* model, KamataEngine::Model* modelAttack,Camera* c
 }
 
 void Player::Update() {
-	
 	if (behaviorRequest_ != Behavior::kUnknown) {
 		behavior_ = behaviorRequest_;
 		switch (behavior_) {
@@ -72,7 +71,6 @@ void Player::Update() {
 }
 
 void Player::BehaviorRootUpdate() {
-	isAttack_ = false;
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 
 		if (canRush_) {
@@ -100,7 +98,6 @@ void Player::BehaviorRootUpdate() {
 };
 
 void Player::BehaviorAttackUpdate() {
-	isAttack_ = true;
 	movingAttackCount_ += 1.0f / 60.0f;
 
 	Vector3 velocity{};
@@ -513,9 +510,6 @@ AABB Player::GetAABB() {
 };
 
 void Player::OnCollision(const Enemy* enemy) {
-	if (IsAttack()) {
-		return;
-	}
 	(void)enemy;
 	isDead_ = true;
 };
