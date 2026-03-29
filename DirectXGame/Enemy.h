@@ -1,6 +1,7 @@
-﻿#pragma once
-#include "KamataEngine.h"
+#pragma once
 #include "AABB.h"
+#include "KamataEngine.h"
+class GameScene;
 class Player;
 class Enemy {
 private:
@@ -23,11 +24,33 @@ private:
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
 
+	bool isDead_ = false;
+
+	enum class Behavior { kUnknown, kWalk, kDeath };
+	Behavior behavior_ = Behavior::kWalk;
+	Behavior behaviorRequest_ = Behavior::kUnknown;
+
+	float deathAnimTimer_ = 0.0f;
+	static inline const float kDeathAnimTimerMax_ = 0.5f;
+
+	bool isCollidionDisabled_ = false;
+
+	GameScene* gameScene_ = nullptr;
+
 public:
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position,GameScene* gameScene);
 	void Update();
 	void Draw();
 	KamataEngine::Vector3 GetWorldPosition();
 	AABB GetAABB();
 	void OnCollision(const Player* player);
+	bool IsDead() const { return isDead_; }
+
+	void BehaviorWalkInitialize();
+	void BehaviorWalkUpdate();
+
+	void BehaviorDeathInitialize();
+	void BehaviorDeathUpdate();
+
+	bool IsCollidionDisabled() const{ return isCollidionDisabled_; };
 };
