@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "AABB.h"
 #include "KamataEngine.h"
 #include "MapChipField.h"
@@ -89,8 +89,6 @@ private:
 	static inline const float kAttackVelocity = 0.3f;
 
 	bool canRush_ = true;
-
-	
 
 public:
 	/// <summary>

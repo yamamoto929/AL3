@@ -3,13 +3,11 @@
 #include "WorldMatrixUpdate.h"
 #include <cassert>
 #include <numbers>
-#include "GameScene.h"
 using namespace KamataEngine;
-void Enemy::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position, GameScene* gameScene) {
+void Enemy::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position) {
 	assert(model);
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	model_ = model;
-	gameScene_ = gameScene;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> * 3.0f / 2.0f;
