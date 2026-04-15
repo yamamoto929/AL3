@@ -1,7 +1,8 @@
 #pragma once
+#include "AABB.h"
+#include "BaseEnemy.h"
 #include "KamataEngine.h"
 #include "MapChipField.h"
-#include "AABB.h"
 
 class MapChipField;
 class Enemy;
@@ -14,18 +15,34 @@ public:
 		KamataEngine::Vector3 velocity = KamataEngine::Vector3{0.0f, 0.0f, 0.0f};
 	};
 
-	enum Corner {
-		kRIGHTBOTTOM,
-		kLEFTBOTTOM,
-		kRIGHTTOP,
-		kLEFTTOP,
-		kNUMCORNER
+	enum Corner { kRIGHTBOTTOM, kLEFTBOTTOM, kRIGHTTOP, kLEFTTOP, kNUMCORNER };
+
+	enum class Behavior { kUnknown, kRoot, kAttack,kKnockback };
+
+	enum class AttackPhase {
+		kPrepare, // ため時間
+		kRush,    // 突撃
+		kRecovery // 余韻
+	};
+
+	enum class KnockbackPhase {
+		kLaunched,
+		kRecovery
+	};
+
+	enum class LRDirection {
+		kRight,
+		kLeft,
 	};
 
 private:
 	uint32_t textureHandle_ = 0;
 	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::Model* modelAttack_ = nullptr;
+
 	KamataEngine::WorldTransform worldTransform_;
+	KamataEngine::WorldTransform worldTransformAttack_;
+
 	KamataEngine::Camera* camera_ = nullptr;
 
 	KamataEngine::Vector3 position_ = {};
@@ -35,10 +52,7 @@ private:
 	static inline const float kAttenuation = 0.1f;
 	static inline const float kLimitRunSpeed = 0.5f;
 
-	enum class LRDirection {
-		kRight,
-		kLeft,
-	};
+	
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
@@ -66,6 +80,34 @@ private:
 	static inline const float kAttenuationWall = 0.5f;
 	static inline const float kGroundSnapOffset = 0.011f;
 
+	// デスフラグ
+	bool isDead_ = false;
+
+	float movingAttackCount_ = 0.0f;
+	static inline const float kMovingAttackCountMax_ = 1.0f;
+
+	Behavior behavior_ = Behavior::kRoot;
+	Behavior behaviorRequest_ = Behavior::kUnknown;
+
+	AttackPhase attackPhase_;
+	static inline const float kPrepareTime = 0.05f;
+	static inline const float kRushTime = 0.3f;
+	static inline const float kAttackRecoveryTime = 0.05f;
+
+	static inline const float kAttackVelocity = 0.3f;
+
+	bool canRush_ = true;
+	bool isAttack_ = false;
+
+	KnockbackPhase knockbackPhase_;
+	float knockbackCount_ = 0.0f;
+	static inline const float kKnockbackRecoveryTime_ = 0.1f;
+	static inline const float kKnockbackLaunchedTime_ = 0.3f;
+
+	static inline const float kKnockbackVelocity = 0.3f;
+	
+	bool isKnockbackRequested_ = false;
+
 public:
 	/// <summary>
 	/// 初期化
@@ -73,7 +115,7 @@ public:
 	/// <param name="model">モデル</param>
 	/// <param name="camera">カメラ</param>
 	/// <param name="position">位置</param>
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Model* modelAttack, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -114,5 +156,21 @@ public:
 
 	AABB GetAABB();
 
-	void OnCollision(const Enemy* enemy);
+	//void OnCollision(const Enemy* enemy);
+
+	void OnCollision(const BaseEnemy* enemy);
+
+	bool IsDead() const { return isDead_; }
+
+	void BehaviorRootUpdate();
+	void BehaviorRootInitialize();
+	void BehaviorAttackUpdate();
+	void BehaviorAttackInitialize();
+	void BehaviorKnockbackInitialize();
+	void BehaviorKnockbackUpdate();
+
+	bool IsAttack() const { return isAttack_; }
+	LRDirection GetLRDirection() const { return lrDirection_; }
+
+	void KnockbackRequest();
 };

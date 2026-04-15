@@ -156,15 +156,25 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="AffineMatrix.cpp" />
+    <ClCompile Include="BaseEffect.cpp" />
+    <ClCompile Include="BaseEnemy.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="DeathParticles.cpp" />
+    <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GuardEffect.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChipField.cpp" />
     <ClCompile Include="Matrix4x4Calc.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RandomNumberGenerator.cpp" />
+    <ClCompile Include="ShieldEnemy.cpp" />
     <ClCompile Include="Skydome.cpp" />
+    <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Vector3Operator.cpp" />
     <ClCompile Include="WorldMatrixUpdate.cpp" />
   </ItemGroup>
@@ -268,14 +278,24 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="AffineMatrix.h" />
+    <ClInclude Include="BaseEffect.h" />
+    <ClInclude Include="BaseEnemy.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="DeathParticles.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GuardEffect.h" />
+    <ClInclude Include="HitEffect.h" />
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="Matrix4x4Calc.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RandomNumberGenerator.h" />
+    <ClInclude Include="ShieldEnemy.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="StageManager.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Vector3Operator.h" />
     <ClInclude Include="WorldMatrixUpdate.h" />
   </ItemGroup>

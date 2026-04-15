@@ -4,7 +4,7 @@
 #include "KamataEngine.h"
 class GameScene;
 class Player;
-class Enemy final:public BaseEnemy{
+class ShieldEnemy final :public BaseEnemy{
 private:
 	KamataEngine::WorldTransform worldTransform_;
 	KamataEngine::Model* model_ = nullptr;
@@ -15,8 +15,8 @@ private:
 
 	KamataEngine::Vector3 velocity_ = {};
 	 
-	static inline const float kWalkMotionAngleStart = 0.0f;
-	static inline const float kWalkMotionAngleEnd = 45.0f;
+	static inline const float kWalkMotionAngleStart = -45.0f;
+	static inline const float kWalkMotionAngleEnd = -90.0f;
 
 	static inline const float kWalkMotionTime = 1.0f;
 
@@ -27,7 +27,7 @@ private:
 
 	bool isDead_ = false;
 
-	enum class Behavior { kUnknown, kWalk, kDeath };
+	enum class Behavior { kUnknown, kWalk, kDeath,kKnockback };
 	Behavior behavior_ = Behavior::kWalk;
 	Behavior behaviorRequest_ = Behavior::kUnknown;
 
@@ -38,10 +38,22 @@ private:
 
 	GameScene* gameScene_ = nullptr;
 
+	enum class LRDirection {
+		kRight,
+		kLeft,
+	};
+
+	LRDirection lrDirection_;
+
+	float knockbackAnimTime_ = 0.0f;
+	static inline const float kKnockbackAnimTimeMax = 0.5f;
+
+	static inline const float kKnockbackMotionAngleMax = -30.0f;
+
 public:
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position, GameScene* gameScene);
-	void Update() override;
-	void Draw() override;
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position,GameScene* gameScene);
+	void Update()override;
+	void Draw()override;
 	KamataEngine::Vector3 GetWorldPosition();
 	AABB GetAABB()override;
 	void OnCollision( Player* player)override;
@@ -52,6 +64,9 @@ public:
 
 	void BehaviorDeathInitialize();
 	void BehaviorDeathUpdate();
+
+	void BehaviorKnockbackInitialize();
+	void BehaviorKnockbackUpdate();
 
 	bool IsCollidionDisabled() const override{ return isCollidionDisabled_; };
 };

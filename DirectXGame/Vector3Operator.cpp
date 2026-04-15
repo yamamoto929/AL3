@@ -53,3 +53,11 @@ Vector3 operator/(const Vector3& lhs, const Vector3& rhs) {
 	result /= rhs;
 	return result;
 }
+
+Vector3 operator/(const Vector3& lhs, float scalar) {
+	Vector3 result = lhs;
+	result.x /= scalar;
+	result.y /= scalar;
+	result.z /= scalar;
+	return result;
+};

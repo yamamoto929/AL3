@@ -14,7 +14,7 @@ void DeathParticles::Initialize(KamataEngine::Model* model, KamataEngine::Camera
 };
 
 void DeathParticles::Update() {
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 
@@ -29,7 +29,7 @@ void DeathParticles::Update() {
 	counter_ += 1.0f / 60.0f;
 	if (counter_ >= kDuration) {
 		counter_ = kDuration;
-		isFinished_ = true;
+		finished_ = true;
 	}
 
 	color_.w = std::clamp(1.0f - counter_ / kDuration, 0.0f, 1.0f);
@@ -41,7 +41,7 @@ void DeathParticles::Update() {
 };
 
 void DeathParticles::Draw() {
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 

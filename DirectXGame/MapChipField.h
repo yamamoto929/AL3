@@ -2,12 +2,19 @@
 #include "KamataEngine.h"
 #include "math/Vector3.h"
 enum class MapChipType {
-	kBlank,
-	kBlock,
+	kBlank, // 空白
+	kBlock, // ブロック
+	kPlayer, // プレイヤー
+	kEnemy, // 敵
+};
+
+struct MapChipDataUnit {
+	MapChipType type;
+	uint8_t subID;
 };
 
 struct MapChipData {
-	std::vector<std::vector<MapChipType>> data;
+	std::vector<std::vector<MapChipDataUnit>> data;
 };
 
 ///< summary>
@@ -28,6 +35,11 @@ public:
 		float bottom; // 下端
 
 		float top; // 上端
+	};
+
+	enum MapChipCharIndex {
+		kChipType = 0, // マップチップタイプ
+		kChipSubID = 1 // タイプごとのサブID
 	};
 
 private:
@@ -51,4 +63,5 @@ public:
 	IndexSet GetMapChipIndexSetByPosition(const KamataEngine::Vector3& position);
 
 	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
+	uint8_t GetMapChipSubIDByIndex(uint32_t xIndex, uint32_t yIndex);
 };

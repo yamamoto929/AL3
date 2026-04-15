@@ -18,7 +18,7 @@ private:
 
 	std::array<KamataEngine::WorldTransform, kNumParticles> worldTransforms_;
 
-	bool isFinished_ = false;
+	bool finished_ = false;
 	float counter_ = 0.0f;
 
 	KamataEngine::ObjectColor objectColor_;
@@ -28,4 +28,5 @@ public:
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
 	void Update();
 	void Draw();
+	bool IsFinished() { return finished_; }
 };
