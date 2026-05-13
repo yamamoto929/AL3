@@ -8,6 +8,9 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 GameScene::~GameScene() {
 	delete model_;
 	delete modelBlock_;
+	delete worldTransform_;
+	delete camera_;
+	delete player_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
