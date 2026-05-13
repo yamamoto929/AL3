@@ -12,7 +12,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//===========================================================
 
 	// エンジンの初期化
-	KamataEngine::Initialize();
+	KamataEngine::Initialize(L"LE2B_30_ヤマモト_ルナ_AL3_04_02");
 
 	// ゲームシーンのインスタンス作成
 	GameScene* gameScene = new GameScene();
