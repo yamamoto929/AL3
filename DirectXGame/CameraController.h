@@ -7,7 +7,8 @@ class Player;
 class CameraController {
 public:
 	enum class Mode {
-
+		kFollow,
+		kForcedScroll
 	};
 	/// <summary>
 	/// 初期化
@@ -35,6 +36,8 @@ public:
 	};
 
 	void SetMovableArea(Rect area) { movableArea_ = area; };
+	void SetMode(Mode mode) { mode_ = mode; }
+	Mode GetMode() const{ return mode_; }
 
 private:
 	KamataEngine::Camera* camera_ = nullptr;
@@ -50,4 +53,6 @@ private:
 	static inline const float kVelocityBias = 20.0f;
 
 	static inline const Rect margin = {-2.0f, 2.0f, -2.0f, 2.0f};
+
+	Mode mode_ = Mode::kFollow;
 };
