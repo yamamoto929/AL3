@@ -6,6 +6,9 @@
 class Player;
 class CameraController {
 public:
+	enum class Mode {
+
+	};
 	/// <summary>
 	/// 初期化
 	/// </summary>
