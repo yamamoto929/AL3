@@ -24,14 +24,20 @@ public:
 	/// <param name= "index">ステージ番号</param>
 	/// <returns>ステージデータ</returns>
 	const StageData& GetStageData(int32_t index) const {
-		assert(index>=0&&index<=2);
+		assert(index >= 0 && index <= stageDatas_.size());
 		return stageDatas_[index];
 	}
 
 	void SetCurrentStageIndex(int32_t index) {
-		assert(index>=0&&index<=2);
+		assert(index >= 0 && index <= stageDatas_.size());
 		currentStageIndex_ = index;
 	}
+
+	/// <summary>
+	/// ステージ名指定で現在ステージ番号設定
+	/// </summary>
+	/// <param name="stageName">ステージ名</param>
+	void SetCurrentStageIndexByName(const std::string& name);
 
 	int32_t GetCurrentStageIndex() const { return currentStageIndex_; }
 

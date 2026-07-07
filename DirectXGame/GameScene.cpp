@@ -66,7 +66,6 @@ void GameScene::Initialize(StageManager* stageDataManager) {
 	skydome_->Initialize(camera_, modelSkydome_);
 
 	mapChipField_ = new MapChipField();
-	stageManager_->SetCurrentStageIndex(1);
 	const StageData& stageData = stageManager_->GetCurrentStageData();
 
 	std::string stageFileName = "Resources/fields/" + stageData.name + ".csv";

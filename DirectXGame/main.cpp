@@ -1,8 +1,11 @@
 #include "GameScene.h"
 #include "KamataEngine.h"
-#include "TitleScene.h"
 #include "StageManager.h"
+#include "TitleScene.h"
 #include <Windows.h>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace KamataEngine;
 
@@ -16,8 +19,8 @@ Scene scene = Scene::kUnknown;
 void ChangeScene();
 void UpdateScene();
 void DrawScene();
+void LoadDebugSettings();
 StageManager* stageManager = nullptr;
-
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
@@ -27,18 +30,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	stageManager = new StageManager;
 	stageManager->LoadStageFiles();
-
-	scene = Scene::kTitle;
-	titleScene = new TitleScene;
-
-	titleScene->Initialize();
-
+	#ifdef _DEBUG
+	LoadDebugSettings();
+	scene = Scene::kGame;
 	// ゲームシーンのインスタンス作成
 	gameScene = new GameScene;
 
 	// ゲームシーンの初期化
 	gameScene->Initialize(stageManager);
-
+	#else
+	scene = Scene::kTitle;
+	titleScene = new TitleScene;
+	titleScene->Initialize();
+	#endif
+	
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -131,3 +136,29 @@ void DrawScene() {
 		break;
 	}
 };
+
+void LoadDebugSettings() {
+	const std::string filepath = "DebugSettings.ini";
+
+	std::ifstream file;
+	file.open(filepath);
+
+	assert(file.is_open());
+
+	std::string line;
+
+	while (std::getline(file, line)) {
+		std::stringstream lineStream(line);
+
+		std::string key;
+		std::string value;
+
+		lineStream >> key >> value;
+
+		if (key == "InitialStage") {
+			stageManager->SetCurrentStageIndexByName(value);
+		}
+	}
+
+	file.close();
+}
